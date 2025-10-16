@@ -28,6 +28,7 @@ public class OrgController {
 		this.orgService = orgService;
 	}
 
+	//Add department
 	@PostMapping("/departments")
 	public ResponseEntity<?> addDepartment(@RequestBody Department dept) {
 		Department savedDept = orgService.addDepartment(dept);
@@ -37,6 +38,7 @@ public class OrgController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedDept);
 	}
 
+	// Add employee
 	@PostMapping("/employee")
 	public ResponseEntity<?> addEmployee(@RequestBody Employee emp) {
 		try {
@@ -50,6 +52,7 @@ public class OrgController {
 		}
 	}
 
+	//Get all designation
 	@GetMapping("/designation")
 	public ResponseEntity<?> getDesignations() {
 		List<Designation> designationList = orgService.getDesignationList();
