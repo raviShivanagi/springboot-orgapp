@@ -28,4 +28,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	List<Employee> findByDepartment_DepartmentName(String departmentName);
 
+	List<Employee> findByDepartment_DepartmentNameAndDesignation_OrgDesignations(String departmentName, OrgDesignations designation);
+
 }

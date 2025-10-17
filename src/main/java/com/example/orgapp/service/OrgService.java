@@ -179,8 +179,21 @@ public class OrgService {
 		Employee emp = employeeRepo.findById(empId)
 				.orElseThrow(() -> new IllegalArgumentException("Employee not found"));
 
-		Employee reportToEmp = employeeRepo.findByIdAndDepartment_DepartmentName(reportTo, depatrmentName)
-				.orElseThrow(() -> new IllegalArgumentException("reportTo employee not found"));
+		Employee reportToEmp = null;
+		if(emp.getDesignation().getOrgDesignations() == OrgDesignations.DEPT_HEAD) {
+			List<Employee> emplist = employeeRepo.findByDepartment_DepartmentNameAndDesignation_OrgDesignations(depatrmentName, OrgDesignations.DEPT_HEAD);
+			if (emplist != null && !emplist.isEmpty()) {
+				throw new IllegalArgumentException("Department Head alredy exsit");
+			} else {
+				reportToEmp = employeeRepo.findById(reportTo).get();
+				if(reportToEmp.getDesignation().getOrgDesignations() != OrgDesignations.CEO) {
+					throw new IllegalArgumentException("department Head must report to CEO");
+				}
+			}
+		} else {
+			reportToEmp = employeeRepo.findByIdAndDepartment_DepartmentName(reportTo, depatrmentName)
+					.orElseThrow(() -> new IllegalArgumentException("reportTo employee not found"));
+		}
 
 		Department newDept = departmentRepo.findByDepartmentName(depatrmentName)
 				.orElseThrow(() -> new IllegalArgumentException("Department not found"));
